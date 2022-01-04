@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, unused_import
 
+import 'package:expense_tracker/screens/add_transaction.dart';
 import 'package:expense_tracker/screens/addname.dart';
 import 'package:expense_tracker/screens/homepage.dart';
 import 'package:expense_tracker/screens/splash.dart';
@@ -13,8 +14,15 @@ import 'package:hive/hive.dart';
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox('money');
-  runApp(
-    GetMaterialApp(
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
       theme: ThemeData(
         primaryColor: primaryColor,
         textTheme: TextTheme(
@@ -25,6 +33,6 @@ void main() async {
       ),
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
-    ),
-  );
+    );
+  }
 }

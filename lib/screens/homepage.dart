@@ -1,13 +1,17 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_local_variable
 
 import 'package:expense_tracker/controllers/dbhelper.dart';
+import 'package:expense_tracker/models/transaction.dart';
 import 'package:expense_tracker/screens/add_transaction.dart';
+import 'package:expense_tracker/screens/settings.dart';
 import 'package:expense_tracker/utils/theme.dart';
 import 'package:expense_tracker/utils/widgets.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,52 +22,136 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  DbHelper dbHelper = DbHelper();
+  late Box box;
   late SharedPreferences preferences;
-  DateTime today = DateTime.now();
-  int totalBalance = 0, totalIncome = 0, totalExpense = 0;
+  DbHelper dbHelper = DbHelper();
+  Map? data;
+  int totalBalance = 0;
+  int totalIncome = 0;
+  int totalExpense = 0;
   List<FlSpot> dataSet = [];
-  List<FlSpot> getPlotPoints(Map entireData) {
-    dataSet = [];
-    entireData.forEach((key, value) {
-      if (value['type'] == "Expense" &&
-          (value['date'] as DateTime).month == today.month) {
-        dataSet.add(
-          FlSpot(
-            (value['date'] as DateTime).day.toDouble(),
-            (value['amount'] as int).toDouble(),
-          ),
-        );
-      }
-    });
-    return dataSet;
+  DateTime today = DateTime.now();
+  DateTime now = DateTime.now();
+  int index = 1;
+
+  List<String> months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
+
+  //
+  //
+  //
+  //
+
+  @override
+  void initState() {
+    super.initState();
+    getPreference();
+    box = Hive.box('money');
   }
 
-  getTotalBalance(Map entireData) {
-    totalExpense = 0;
-    totalIncome = 0;
-    totalBalance = 0;
-    entireData.forEach((key, value) {
-      if (value['type'] == "Income") {
-        totalBalance += (value['amount'] as int);
-        totalIncome += (value['amount'] as int);
-      } else {
-        totalBalance -= (value['amount'] as int);
-        totalExpense += (value['amount'] as int);
-      }
-    });
-  }
+  //
+  //
+  //
+  //
 
   getPreference() async {
     preferences = await SharedPreferences.getInstance();
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getPreference();
+//
+//
+//
+//
+
+  Future<List<TransactionModel>> fetch() async {
+    if (box.values.isEmpty) {
+      return Future.value([]);
+    } else {
+      List<TransactionModel> items = [];
+      box.toMap().values.forEach((element) {
+        items.add(
+          TransactionModel(element['amount'] as int,
+              element['date'] as DateTime, element['note'], element['type']),
+        );
+      });
+      return items;
+    }
   }
+
+  //
+  //
+  //
+  //
+
+  List<FlSpot> getPlotPoints(List<TransactionModel> entireData) {
+    dataSet = [];
+    dataSet = [];
+    List tempdataSet = [];
+
+    for (TransactionModel item in entireData) {
+      if (item.date.month == today.month && item.type == "Expense") {
+        tempdataSet.add(item);
+      }
+    }
+    //
+    // Sorting the list as per the date
+    tempdataSet.sort((a, b) => a.date.day.compareTo(b.date.day));
+    //
+    for (var i = 0; i < tempdataSet.length; i++) {
+      dataSet.add(
+        FlSpot(
+          tempdataSet[i].date.day.toDouble(),
+          tempdataSet[i].amount.toDouble(),
+        ),
+      );
+    }
+    return dataSet;
+  }
+
+//
+//
+//
+//
+
+  getTotalBalance(List<TransactionModel> entireData) {
+    totalExpense = 0;
+    totalIncome = 0;
+    totalBalance = 0;
+
+    for (TransactionModel data in entireData) {
+      if (data.date.month == today.month) {
+        if (data.type == "Income") {
+          totalBalance += data.amount;
+          totalIncome += data.amount;
+        } else {
+          totalBalance -= data.amount;
+          totalExpense += data.amount;
+        }
+      }
+    }
+  }
+
+//
+//
+//
+//
+
+//
+//
+//
+//
 
   @override
   Widget build(BuildContext context) {
@@ -91,8 +179,13 @@ class _HomePageState extends State<HomePage> {
         ),
         backgroundColor: primaryColor,
       ),
-      body: FutureBuilder<Map>(
-        future: dbHelper.fetch(),
+
+//
+//
+//
+//
+      body: FutureBuilder<List<TransactionModel>>(
+        future: fetch(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -120,11 +213,7 @@ class _HomePageState extends State<HomePage> {
                             fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       GestureDetector(
-                        onTap: () => Get.snackbar(
-                          "Under Construction",
-                          "This button is under construction",
-                          duration: Duration(milliseconds: 685),
-                        ),
+                        onTap: () => Get.to(Settings()),
                         child: Icon(
                           Icons.settings,
                           size: 32,
@@ -187,20 +276,23 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   if (dataSet.length <= 2)
-                    Container(
-                      height: 50,
-                      width: width / 1.1,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [BoxShadow(blurRadius: 1.5)]),
-                      child: Center(
-                        child: Text(
-                          " Insufficient data to render a chart",
-                          style: GoogleFonts.poppins(
+                    Card(
+                      elevation: 5,
+                      clipBehavior: Clip.hardEdge,
+                      shadowColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Container(
+                        height: 65,
+                        child: Center(
+                          child: Text(
+                            " Insufficient data to render a chart",
+                            style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w500,
-                              letterSpacing: 1,
-                              fontSize: 18),
+                              letterSpacing: 1.1,
+                              fontSize: 17.5,
+                            ),
+                          ),
                         ),
                       ),
                     )
@@ -249,7 +341,7 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "Recent Expenses",
+                      "Transactions",
                       style: TextStyle(
                           fontSize: 35,
                           fontWeight: FontWeight.bold,
@@ -260,20 +352,60 @@ class _HomePageState extends State<HomePage> {
                     height: 10,
                   ),
                   ListView.builder(
-                    shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
-                      Map dataAtIndex = snapshot.data![index];
-                      if (dataAtIndex['type'] == "Income") {
-                        return IncomeTile(
-                            dataAtIndex['amount'], dataAtIndex['note']);
+                      TransactionModel dataAtIndex = snapshot.data![index];
+                      try {
+                        dataAtIndex = snapshot.data![index];
+                      } catch (e) {
+                        return Container();
+                      }
+                      if (dataAtIndex.type == "Income") {
+                        DateTime date = dataAtIndex.date;
+                        String currentDate =
+                            "${date.day} ,${months[date.month - 1]},${date.year}";
+                        return GestureDetector(
+                          onLongPress: () async {
+                            bool? answer = await showConfirmDialog(
+                              context,
+                              "WARNING",
+                              "This will delete this record. This action is irreversible. Do you want to continue ?",
+                            );
+                            if (answer != null && answer) {
+                              dbHelper.deleteData(index);
+                              setState(() {});
+                            }
+                          },
+                          child: IncomeTile(context, dataAtIndex.amount,
+                              dataAtIndex.note, currentDate, index),
+                        );
                       } else {
-                        return ExpenseTile(
-                            dataAtIndex['amount'], dataAtIndex['note']);
+                        DateTime date = dataAtIndex.date;
+                        String currentDate =
+                            "${date.day},${months[date.month - 1]},${date.year}";
+                        return GestureDetector(
+                          onLongPress: () async {
+                            bool? answer = await showConfirmDialog(
+                              context,
+                              "WARNING",
+                              "This will delete this record. This action is irreversible. Do you want to continue ?",
+                            );
+                            if (answer != null && answer) {
+                              dbHelper.deleteData(index);
+                              setState(() {});
+                            }
+                          },
+                          child: ExpenseTile(context, dataAtIndex.amount,
+                              dataAtIndex.note, currentDate, index),
+                        );
                       }
                     },
                   ),
+                  SizedBox(
+                    height: 70,
+                  )
                 ],
               ),
             );

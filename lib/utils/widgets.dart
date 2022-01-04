@@ -1,35 +1,61 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:expense_tracker/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+List<String> months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec"
+];
 
 Widget cardIncome(String income) {
+  // |Income
+  // 1200
   return Row(
     children: [
       Container(
         decoration: BoxDecoration(
-          color: Colors.grey.shade50,
+          color: Colors.white70,
           borderRadius: BorderRadius.circular(18),
         ),
-        padding: EdgeInsets.all(6.0),
-        child: Icon(
-          Icons.arrow_downward,
+        padding: const EdgeInsets.all(6.0),
+        child: const Icon(
+          Icons.arrow_upward,
           color: Colors.greenAccent,
         ),
       ),
-      SizedBox(
+      const SizedBox(
         width: 8.5,
       ),
       Column(
         children: [
-          Text(
+          const Text(
             "Income",
-            style: TextStyle(color: Colors.white, fontSize: 16),
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 19,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 2),
           ),
           Text(
             income,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 19,
               fontWeight: FontWeight.w600,
+              letterSpacing: 2,
             ),
           )
         ],
@@ -39,6 +65,8 @@ Widget cardIncome(String income) {
 }
 
 Widget cardExpense(String expense) {
+  // | Expense
+  // | 1200
   return Row(
     children: [
       Container(
@@ -46,24 +74,29 @@ Widget cardExpense(String expense) {
           color: Colors.white70,
           borderRadius: BorderRadius.circular(18),
         ),
-        padding: EdgeInsets.all(6.0),
-        child: Icon(
-          Icons.arrow_upward,
+        padding: const EdgeInsets.all(6.0),
+        child: const Icon(
+          Icons.arrow_downward,
           color: Colors.redAccent,
         ),
       ),
-      SizedBox(
+      const SizedBox(
         width: 8.5,
       ),
       Column(
         children: [
-          Text(
+          const Text(
             "Expense",
-            style: TextStyle(color: Colors.white, fontSize: 16),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 19,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 2,
+            ),
           ),
           Text(
             expense,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 19,
               fontWeight: FontWeight.w600,
@@ -75,12 +108,13 @@ Widget cardExpense(String expense) {
   );
 }
 
-Widget IncomeTile(int value, String Note) {
+Widget IncomeTile(
+    BuildContext context, int value, String note, String date, int index) {
   return Container(
-    margin: EdgeInsets.all(
+    margin: const EdgeInsets.all(
       8.0,
     ),
-    padding: EdgeInsets.all(
+    padding: const EdgeInsets.all(
       18.0,
     ),
     decoration: BoxDecoration(
@@ -96,30 +130,61 @@ Widget IncomeTile(int value, String Note) {
     ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Row(
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(
-              Icons.arrow_circle_up_outlined,
-              size: 28.0,
-              color: Colors.green[700],
-            ),
-            SizedBox(
-              width: 4.0,
+            Row(
+              children: [
+                Icon(
+                  Icons.arrow_circle_up_outlined,
+                  size: 28.0,
+                  color: Colors.green[700],
+                ),
+                const SizedBox(
+                  width: 4.0,
+                ),
+                const Text(
+                  "Income",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
             Text(
-              "Income",
-              style: TextStyle(
-                fontSize: 20.0,
+              "$date",
+              style: GoogleFonts.poppins(
+                fontSize: 12.0,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 1.1,
               ),
             ),
           ],
         ),
-        Text(
-          "+ $value",
-          style: TextStyle(
-            fontSize: 24.0,
-            fontWeight: FontWeight.w700,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                "+ $value",
+                style: const TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 2,
+                ),
+              ),
+              Text(
+                "$note",
+                style: const TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 2,
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -127,12 +192,13 @@ Widget IncomeTile(int value, String Note) {
   );
 }
 
-Widget ExpenseTile(int value, String Note) {
+Widget ExpenseTile(
+    BuildContext context, int value, String note, String date, int index) {
   return Container(
-    margin: EdgeInsets.all(
+    margin: const EdgeInsets.all(
       8.0,
     ),
-    padding: EdgeInsets.all(
+    padding: const EdgeInsets.all(
       18.0,
     ),
     decoration: BoxDecoration(
@@ -149,29 +215,88 @@ Widget ExpenseTile(int value, String Note) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
+        Column(
           children: [
-            Icon(
-              Icons.arrow_circle_down_outlined,
-              size: 28.0,
-              color: Colors.red[700],
-            ),
-            SizedBox(
-              width: 4.0,
+            Row(
+              children: [
+                Icon(
+                  Icons.arrow_circle_down_outlined,
+                  size: 28.0,
+                  color: Colors.red[700],
+                ),
+                const SizedBox(
+                  width: 4.0,
+                ),
+                const Text(
+                  "Expense",
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
             Text(
-              "Expense",
-              style: TextStyle(
-                fontSize: 20.0,
+              "$date",
+              style: GoogleFonts.poppins(
+                fontSize: 12.0,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 1.1,
               ),
             ),
           ],
         ),
-        Text(
-          "- $value",
-          style: TextStyle(
-            fontSize: 24.0,
-            fontWeight: FontWeight.w700,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                "- $value",
+                style: const TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 2,
+                ),
+              ),
+              Text(
+                "$note",
+                style: const TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 2,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+showConfirmDialog(BuildContext context, String title, String content) async {
+  return await showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(title),
+      content: Text(content),
+      actions: [
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop(true);
+          },
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(
+              Colors.red,
+            ),
+          ),
+          child: Text(
+            "YES",
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+          child: Text(
+            "No",
           ),
         ),
       ],
