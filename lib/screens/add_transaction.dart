@@ -57,30 +57,22 @@ class _AddTransaction extends State<AddTransaction> {
       appBar: AppBar(
         toolbarHeight: 0.0,
       ),
-      backgroundColor: Colors.white,
       //
       body: ListView(
         padding: EdgeInsets.all(
           12.0,
         ),
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: () => Get.back(),
-                icon: Icon(Icons.arrow_back_ios),
+          Center(
+            child: Text(
+              "Add Transaction",
+              textAlign: TextAlign.center,
+              style: GoogleFonts.italiana(
+                fontSize: 32.0,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 3,
               ),
-              Text(
-                "Add Transaction",
-                textAlign: TextAlign.center,
-                style: GoogleFonts.italiana(
-                  fontSize: 32.0,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 3,
-                ),
-              ),
-            ],
+            ),
           ),
           //
           SizedBox(
@@ -299,7 +291,7 @@ class _AddTransaction extends State<AddTransaction> {
                     style: GoogleFonts.cormorant(
                       fontSize: 22.0,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey[700],
+                      color: Colors.grey,
                     ),
                   ),
                 ],
@@ -318,7 +310,11 @@ class _AddTransaction extends State<AddTransaction> {
                 if (amount != null && note.isNotEmpty) {
                   DbHelper dbhelper = DbHelper();
                   await dbhelper.addData(amount!, selectedDate, note, type);
-                  Navigator.of(context).pop();
+                  Get.snackbar(
+                    "Transaction Added",
+                    "Revert to Home Page to see the changes",
+                    duration: Duration(milliseconds: 785),
+                  );
                 } else {
                   Get.snackbar(
                     "Please Enter a valid Amount",

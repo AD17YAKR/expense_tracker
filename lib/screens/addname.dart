@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'navbar.dart';
+
 class AddNameScreen extends StatefulWidget {
   const AddNameScreen({Key? key}) : super(key: key);
 
@@ -90,7 +92,7 @@ class _AddNameScreenState extends State<AddNameScreen> {
               onPressed: () {
                 if (name.isNotEmpty) {
                   dbHelper.addName(name);
-                  Get.to(HomePage());
+                  Get.to(MyHomePage());
                 } else {
                   Get.snackbar(
                     "Oops!",

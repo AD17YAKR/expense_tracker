@@ -16,14 +16,14 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class IncomePage extends StatefulWidget {
+  const IncomePage({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _IncomePageState createState() => _IncomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _IncomePageState extends State<IncomePage> {
   late Box box;
   late SharedPreferences preferences;
   DbHelper dbHelper = DbHelper();
@@ -98,6 +98,40 @@ class _HomePageState extends State<HomePage> {
   //
   //
 
+//
+//
+//
+//
+
+  List<FlSpot> getPlotPointsIncome(List<TransactionModel> entireData) {
+    dataSetIncome = [];
+    List tempdataSet = [];
+
+    for (TransactionModel item in entireData) {
+      if (item.date.month == today.month && item.type == "Income") {
+        tempdataSet.add(item);
+      }
+    }
+    //
+    // Sorting the list as per the date
+    tempdataSet.sort((a, b) => a.date.day.compareTo(b.date.day));
+    //
+    for (var i = 0; i < tempdataSet.length; i++) {
+      dataSetIncome.add(
+        FlSpot(
+          tempdataSet[i].date.day.toDouble(),
+          tempdataSet[i].amount.toDouble(),
+        ),
+      );
+    }
+    return dataSetIncome;
+  }
+
+  //
+  //
+  //
+  //
+
   getTotalBalance(List<TransactionModel> entireData) {
     totalExpense = 0;
     totalIncome = 0;
@@ -154,79 +188,107 @@ class _HomePageState extends State<HomePage> {
               );
             }
             getTotalBalance(snapshot.data!);
+            getPlotPointsIncome(snapshot.data!);
             return Padding(
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 3.0),
               child: ListView(
                 children: [
                   Center(
                     child: Text(
-                      "Welcome ${preferences.getString("name")} ",
+                      "Income Data ",
                       style: TextStyle(
-                        fontSize: 32,
+                        fontSize: 40,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 18,
+                  Divider(
+                    thickness: 1.5,
+                    color: primaryColor,
                   ),
-                  Container(
-                    width: width / 1.05,
-                    margin: EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          primaryColor,
-                          Colors.indigoAccent,
-                        ],
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 15, top: 6),
+                      child: Text(
+                        " Income Chart",
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold),
                       ),
-                      borderRadius: BorderRadius.circular(10),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                    child: Column(
-                      children: [
-                        Text(
-                          "Total Balance ",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              letterSpacing: 2,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "₹ $totalBalance",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            letterSpacing: 2,
+                  ),
+                  if (dataSetIncome.length <= 2)
+                    Card(
+                      elevation: 5,
+                      clipBehavior: Clip.hardEdge,
+                      shadowColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Container(
+                        height: 65,
+                        child: Center(
+                          child: Text(
+                            " Insufficient data to render a chart",
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 1.1,
+                              fontSize: 17.5,
+                            ),
                           ),
                         ),
-                        SizedBox(
-                          height: 15,
+                      ),
+                    )
+                  else
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade50,
+                        borderRadius: BorderRadius.circular(
+                          8.0,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              child: cardIncome(totalIncome.toString()),
-                              onTap: () => Get.to(IncomePage()),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.4),
+                            spreadRadius: 5,
+                            blurRadius: 6,
+                            offset: Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 1.0,
+                        vertical: 28.0,
+                      ),
+                      margin: EdgeInsets.all(
+                        7.0,
+                      ),
+                      height: 500.0,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 3.0, right: 35),
+                        child: LineChart(
+                          LineChartData(
+                            titlesData: FlTitlesData(
+                              show: true,
+                              rightTitles: SideTitles(),
+                              topTitles: SideTitles(),
                             ),
-                            GestureDetector(
-                              child: cardExpense(totalExpense.toString()),
-                              onTap: () => Get.to(
-                                ExpensePage(),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: getPlotPointsIncome(snapshot.data!),
+                                isCurved: false,
+                                barWidth: 2.5,
+                                colors: [
+                                  primaryColor,
+                                ],
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        )
-                      ],
+                      ),
                     ),
+                  SizedBox(
+                    height: 20,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -271,26 +333,8 @@ class _HomePageState extends State<HomePage> {
                           child: IncomeTile(context, dataAtIndex.amount,
                               dataAtIndex.note, currentDate, index),
                         );
-                      } else {
-                        DateTime date = dataAtIndex.date;
-                        String currentDate =
-                            "${date.day},${months[date.month - 1]},${date.year}";
-                        return GestureDetector(
-                          onLongPress: () async {
-                            bool? answer = await showConfirmDialog(
-                              context,
-                              "WARNING",
-                              "This will delete this record. This action is irreversible. Do you want to continue ?",
-                            );
-                            if (answer != null && answer) {
-                              dbHelper.deleteData(index);
-                              setState(() {});
-                            }
-                          },
-                          child: ExpenseTile(context, dataAtIndex.amount,
-                              dataAtIndex.note, currentDate, index),
-                        );
-                      }
+                      } else
+                        return Container();
                     },
                   ),
                   SizedBox(

@@ -1,8 +1,9 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, unused_import
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, unused_import, unnecessary_import
 
 import 'package:expense_tracker/screens/add_transaction.dart';
 import 'package:expense_tracker/screens/addname.dart';
 import 'package:expense_tracker/screens/homepage.dart';
+import 'package:expense_tracker/screens/navbar.dart';
 import 'package:expense_tracker/screens/splash.dart';
 import 'package:expense_tracker/utils/theme.dart';
 import 'package:flutter/material.dart';
@@ -23,14 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      theme: ThemeData(
-        primaryColor: primaryColor,
-        textTheme: TextTheme(
-            bodyText1: GoogleFonts.roboto(),
-            bodyText2: GoogleFonts.mate(),
-            subtitle1: GoogleFonts.eagleLake(),
-            subtitle2: GoogleFonts.eagleLake()),
-      ),
+      theme: light,
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     );

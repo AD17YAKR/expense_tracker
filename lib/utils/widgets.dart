@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'customanimatedbottombar.dart';
+
 List<String> months = [
   "Jan",
   "Feb",
@@ -110,6 +112,7 @@ Widget cardExpense(String expense) {
 
 Widget IncomeTile(
     BuildContext context, int value, String note, String date, int index) {
+  if (note == "Expense") note = "Income";
   return Container(
     margin: const EdgeInsets.all(
       8.0,
@@ -121,9 +124,11 @@ Widget IncomeTile(
       gradient: LinearGradient(
         colors: [
           Colors.greenAccent,
-          Colors.grey.shade100,
+          Colors.greenAccent.shade100,
+          cardcolor,
         ],
       ),
+      boxShadow: [bshadow],
       borderRadius: BorderRadius.circular(
         8.0,
       ),
@@ -155,7 +160,7 @@ Widget IncomeTile(
               ],
             ),
             Text(
-              "$date",
+              date,
               style: GoogleFonts.poppins(
                 fontSize: 12.0,
                 fontWeight: FontWeight.w400,
@@ -177,7 +182,7 @@ Widget IncomeTile(
                 ),
               ),
               Text(
-                "$note",
+                note,
                 style: const TextStyle(
                   fontSize: 12.0,
                   fontWeight: FontWeight.w700,
@@ -204,10 +209,12 @@ Widget ExpenseTile(
     decoration: BoxDecoration(
       gradient: LinearGradient(
         colors: [
-          Colors.grey.shade100,
+          cardcolor,
+          Colors.redAccent.shade100,
           Colors.redAccent,
         ],
       ),
+      boxShadow: [bshadow],
       borderRadius: BorderRadius.circular(
         8.0,
       ),
@@ -229,12 +236,15 @@ Widget ExpenseTile(
                 ),
                 const Text(
                   "Expense",
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
             Text(
-              "$date",
+              date,
               style: GoogleFonts.poppins(
                 fontSize: 12.0,
                 fontWeight: FontWeight.w400,
@@ -256,7 +266,7 @@ Widget ExpenseTile(
                 ),
               ),
               Text(
-                "$note",
+                note,
                 style: const TextStyle(
                   fontSize: 12.0,
                   fontWeight: FontWeight.w700,
@@ -284,7 +294,7 @@ showConfirmDialog(BuildContext context, String title, String content) async {
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(
-              Colors.red,
+              Colors.redAccent.shade700,
             ),
           ),
           child: Text(
@@ -298,6 +308,7 @@ showConfirmDialog(BuildContext context, String title, String content) async {
           child: Text(
             "No",
           ),
+          style: ElevatedButton.styleFrom(primary: primaryColor),
         ),
       ],
     ),
