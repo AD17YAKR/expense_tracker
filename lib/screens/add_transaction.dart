@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import, unused_local_variable, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:expense_tracker/controllers/dbhelper.dart';
+import 'package:expense_tracker/utils/gradientText.dart';
 import 'package:expense_tracker/utils/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,9 +55,7 @@ class _AddTransaction extends State<AddTransaction> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 0.0,
-      ),
+      appBar: AppBar(toolbarHeight: 0.0, backgroundColor: primaryColor),
       //
       body: ListView(
         padding: EdgeInsets.all(
@@ -64,14 +63,14 @@ class _AddTransaction extends State<AddTransaction> {
         ),
         children: [
           Center(
-            child: Text(
+            child: GradientText(
               "Add Transaction",
-              textAlign: TextAlign.center,
               style: GoogleFonts.italiana(
                 fontSize: 32.0,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 3,
               ),
+              gradient: textGrad2,
             ),
           ),
           //
@@ -107,9 +106,10 @@ class _AddTransaction extends State<AddTransaction> {
                     hintText: "0",
                     border: InputBorder.none,
                   ),
-                  style: GoogleFonts.eagleLake(
-                    fontSize: 20.0,
-                  ),
+                  style: GoogleFonts.roboto(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 2),
                   onChanged: (val) {
                     try {
                       amount = int.parse(val);
@@ -160,9 +160,10 @@ class _AddTransaction extends State<AddTransaction> {
                     hintText: "Note on Transaction",
                     border: InputBorder.none,
                   ),
-                  style: GoogleFonts.eagleLake(
-                    fontSize: 20.0,
-                  ),
+                  style: GoogleFonts.montserrat(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 2),
                   onChanged: (val) {
                     note = val;
                   },
@@ -200,8 +201,10 @@ class _AddTransaction extends State<AddTransaction> {
               ChoiceChip(
                 label: Text(
                   "Income",
-                  style: GoogleFonts.eagleLake(
+                  style: GoogleFonts.montserrat(
                     fontSize: 18.0,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 2,
                     color: type == "Income" ? Colors.white : Colors.black,
                   ),
                 ),
@@ -224,8 +227,10 @@ class _AddTransaction extends State<AddTransaction> {
               ChoiceChip(
                 label: Text(
                   "Expense",
-                  style: GoogleFonts.eagleLake(
+                  style: GoogleFonts.montserrat(
                     fontSize: 18.0,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 2,
                     color: type == "Expense" ? Colors.white : Colors.black,
                   ),
                 ),
@@ -288,9 +293,9 @@ class _AddTransaction extends State<AddTransaction> {
                   ),
                   Text(
                     "${selectedDate.day} ${months[selectedDate.month - 1]},${selectedDate.year}",
-                    style: GoogleFonts.cormorant(
+                    style: GoogleFonts.poppins(
                       fontSize: 22.0,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w300,
                       color: Colors.grey,
                     ),
                   ),
@@ -310,11 +315,25 @@ class _AddTransaction extends State<AddTransaction> {
                 if (amount != null && note.isNotEmpty) {
                   DbHelper dbhelper = DbHelper();
                   await dbhelper.addData(amount!, selectedDate, note, type);
-                  Get.snackbar(
-                    "Transaction Added",
-                    "Revert to Home Page to see the changes",
-                    duration: Duration(milliseconds: 785),
-                  );
+
+                  if (type == "Income") {
+                    Get.snackbar(
+                      "Income Added",
+                      "Your Income has been added,Please Revert to Home Page to see the changes",
+                      duration: Duration(milliseconds: 985),
+                      backgroundColor:
+                          Colors.greenAccent.shade100.withOpacity(.3),
+                    );
+                  }
+                  if (type == "Expense") {
+                    Get.snackbar(
+                      "Expense Added",
+                      "Your Expense ahs been added,Please Revert to Home Page to see the changes",
+                      duration: Duration(milliseconds: 785),
+                      backgroundColor:
+                          Colors.redAccent.shade100.withOpacity(.1),
+                    );
+                  }
                 } else {
                   Get.snackbar(
                     "Please Enter a valid Amount",
@@ -323,7 +342,9 @@ class _AddTransaction extends State<AddTransaction> {
                   );
                 }
               },
-              style: ElevatedButton.styleFrom(primary: primaryColor),
+              style: ElevatedButton.styleFrom(
+                primary: primaryColor,
+              ),
               child: Text(
                 "Add",
                 style: GoogleFonts.eagleLake(

@@ -1,11 +1,10 @@
-// ignore_for_file: prefer_const_constructors, unused_local_variable
+// ignore_for_file: prefer_const_constructors, unused_local_variable, prefer_final_fields, unused_field
 
 import 'package:expense_tracker/controllers/dbhelper.dart';
 import 'package:expense_tracker/models/transaction.dart';
-import 'package:expense_tracker/screens/add_transaction.dart';
 import 'package:expense_tracker/screens/expensePage.dart';
 import 'package:expense_tracker/screens/incomePage.dart';
-import 'package:expense_tracker/screens/settings.dart';
+import 'package:expense_tracker/utils/gradientText.dart';
 import 'package:expense_tracker/utils/theme.dart';
 import 'package:expense_tracker/utils/widgets.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -36,6 +35,8 @@ class _HomePageState extends State<HomePage> {
   DateTime today = DateTime.now();
   DateTime now = DateTime.now();
   int index = 1;
+  int selectedIndex = 0;
+  DateTime selectedDate = DateTime.now();
 
   List<String> months = [
     "Jan",
@@ -51,11 +52,13 @@ class _HomePageState extends State<HomePage> {
     "Nov",
     "Dec"
   ];
+  late int mot = 0;
 
   //
   //
   //
   //
+  List<ChoiceChip> month = [];
 
   @override
   void initState() {
@@ -154,22 +157,34 @@ class _HomePageState extends State<HomePage> {
               );
             }
             getTotalBalance(snapshot.data!);
+
             return Padding(
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 3.0),
               child: ListView(
                 children: [
                   Center(
-                    child: Text(
+                    child: GradientText(
                       "Welcome ${preferences.getString("name")} ",
-                      style: TextStyle(
+                      style: GoogleFonts.mate(
+                        fontWeight: FontWeight.w500,
                         fontSize: 32,
-                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
                       ),
+                      gradient: LinearGradient(colors: [
+                        primaryColor,
+                        Colors.indigoAccent,
+                        Colors.greenAccent.shade700,
+                        Colors.redAccent
+                      ]),
                     ),
                   ),
                   SizedBox(
                     height: 18,
                   ),
+                  // Wrap(
+                  //   children: dateChips(),
+                  // ),
+
                   Container(
                     width: width / 1.05,
                     margin: EdgeInsets.all(10.0),
@@ -228,14 +243,14 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
+                  Center(
+                    child: GradientText(
                       "Transactions",
                       style: TextStyle(
                           fontSize: 35,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 2),
+                      gradient: textGrad,
                     ),
                   ),
                   SizedBox(
@@ -308,4 +323,11 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+class Months {
+  String label;
+  Color color;
+
+  Months(this.label, this.color);
 }

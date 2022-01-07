@@ -1,11 +1,8 @@
-// ignore_for_file: prefer_const_constructors, unused_local_variable
+// ignore_for_file: prefer_const_constructors, unused_local_variable, prefer_const_literals_to_create_immutables
 
 import 'package:expense_tracker/controllers/dbhelper.dart';
 import 'package:expense_tracker/models/transaction.dart';
-import 'package:expense_tracker/screens/add_transaction.dart';
-import 'package:expense_tracker/screens/expensePage.dart';
-import 'package:expense_tracker/screens/incomePage.dart';
-import 'package:expense_tracker/screens/settings.dart';
+import 'package:expense_tracker/utils/gradientText.dart';
 import 'package:expense_tracker/utils/theme.dart';
 import 'package:expense_tracker/utils/widgets.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -14,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ExpensePage extends StatefulWidget {
@@ -32,24 +30,27 @@ class _ExpensePageState extends State<ExpensePage> {
   int totalIncome = 0;
   int totalExpense = 0;
   List<FlSpot> dataSet = [];
-  List<FlSpot> dataSetIncome = [];
+  List<FlSpot> dataSetExpense = [];
   DateTime today = DateTime.now();
   DateTime now = DateTime.now();
   int index = 1;
+  int selectedIndex = 0;
+  DateTime selectedDate = DateTime.now();
 
+  //
   List<String> months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
+    "January",
+    "February",
+    "March",
+    "April",
     "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
   ];
 
   //
@@ -81,6 +82,7 @@ class _ExpensePageState extends State<ExpensePage> {
   Future<List<TransactionModel>> fetch() async {
     if (box.values.isEmpty) {
       return Future.value([]);
+      return Future.value([]);
     } else {
       List<TransactionModel> items = [];
       box.toMap().values.forEach((element) {
@@ -98,13 +100,17 @@ class _ExpensePageState extends State<ExpensePage> {
   //
   //
 
+//
+//
+//
+//
+
   List<FlSpot> getPlotPointsExpense(List<TransactionModel> entireData) {
-    dataSet = [];
-    dataSet = [];
+    dataSetExpense = [];
     List tempdataSet = [];
 
     for (TransactionModel item in entireData) {
-      if (item.date.month == today.month && item.type == "Expense") {
+      if (item.date.month == selectedDate.month && item.type == "Expense") {
         tempdataSet.add(item);
       }
     }
@@ -113,43 +119,14 @@ class _ExpensePageState extends State<ExpensePage> {
     tempdataSet.sort((a, b) => a.date.day.compareTo(b.date.day));
     //
     for (var i = 0; i < tempdataSet.length; i++) {
-      dataSet.add(
+      dataSetExpense.add(
         FlSpot(
           tempdataSet[i].date.day.toDouble(),
           tempdataSet[i].amount.toDouble(),
         ),
       );
     }
-    return dataSet;
-  }
-
-//
-//
-//
-//
-
-  List<FlSpot> getPlotPointsIncome(List<TransactionModel> entireData) {
-    dataSetIncome = [];
-    List tempdataSet = [];
-
-    for (TransactionModel item in entireData) {
-      if (item.date.month == today.month && item.type == "Income") {
-        tempdataSet.add(item);
-      }
-    }
-    //
-    // Sorting the list as per the date
-    tempdataSet.sort((a, b) => a.date.day.compareTo(b.date.day));
-    //
-    for (var i = 0; i < tempdataSet.length; i++) {
-      dataSetIncome.add(
-        FlSpot(
-          tempdataSet[i].date.day.toDouble(),
-          tempdataSet[i].amount.toDouble(),
-        ),
-      );
-    }
-    return dataSetIncome;
+    return dataSetExpense;
   }
 
   //
@@ -163,13 +140,13 @@ class _ExpensePageState extends State<ExpensePage> {
     totalBalance = 0;
 
     for (TransactionModel data in entireData) {
-      if (data.date.month == today.month) {
-        if (data.type == "Income") {
+      if (data.date.month == selectedDate.month) {
+        if (data.type == "Expense") {
           totalBalance += data.amount;
-          totalIncome += data.amount;
+          totalExpense += data.amount;
         } else {
           totalBalance -= data.amount;
-          totalExpense += data.amount;
+          totalIncome += data.amount;
         }
       }
     }
@@ -179,6 +156,21 @@ class _ExpensePageState extends State<ExpensePage> {
 //
 //
 //
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showMonthPicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101, 12));
+    if (picked != null && picked != selectedDate) {
+      setState(
+        () {
+          selectedDate = picked;
+        },
+      );
+    }
+  }
 
 //
 //
@@ -218,26 +210,124 @@ class _ExpensePageState extends State<ExpensePage> {
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 3.0),
               child: ListView(
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        onPressed: () => Get.back(),
+                        icon: Icon(Icons.arrow_back_ios),
+                      ),
+                      GradientText(
+                        "Expense Data ",
+                        style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        gradient: LinearGradient(
+                          colors: [primaryColor, Colors.grey, Colors.red],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 1,
+                      ),
+                    ],
+                  ),
+                  Divider(
+                    thickness: 1.5,
+                    color: primaryColor,
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        height: 50.0,
+                        child: TextButton(
+                          onPressed: () {
+                            _selectDate(context);
+                            FocusScope.of(context).unfocus();
+                          },
+                          style: ButtonStyle(
+                            padding: MaterialStateProperty.all(
+                              EdgeInsets.zero,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.black54,
+                                  borderRadius: BorderRadius.circular(
+                                    16.0,
+                                  ),
+                                  gradient: LinearGradient(colors: [
+                                    Colors.black,
+                                    Colors.red.shade700,
+                                  ]),
+                                ),
+                                padding: EdgeInsets.all(
+                                  12.0,
+                                ),
+                                child: Icon(
+                                  Icons.date_range_outlined,
+                                  size: 24.0,
+                                  // color: Colors.grey[700],
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 12.0,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          "For " +
+                              months[selectedDate.month.toInt() - 1] +
+                              ", " +
+                              selectedDate.year.toString(),
+                          style: GoogleFonts.poppins(
+                              fontSize: 18, letterSpacing: 1.3),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Divider(
+                    thickness: 1,
+                  ),
                   Center(
-                    child: Text(
-                      "Expenses Data ",
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
+                    child: GradientText(
+                      " Total Expense for " +
+                          months[selectedDate.month.toInt() - 1] +
+                          " is : " +
+                          totalExpense.toString(),
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      gradient: LinearGradient(
+                        colors: [
+                          primaryColor,
+                          Colors.black,
+                          Colors.redAccent.shade200,
+                        ],
                       ),
                     ),
+                  ),
+                  Divider(
+                    thickness: .3,
+                    color: primaryColor,
                   ),
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 15, top: 6),
                       child: Text(
-                        " Expense Chart",
+                        " Income Chart",
                         style: TextStyle(
                             fontSize: 22, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
-                  if (dataSet.length <= 2)
+                  if (dataSetExpense.length <= 2)
                     Card(
                       elevation: 5,
                       clipBehavior: Clip.hardEdge,
@@ -267,7 +357,7 @@ class _ExpensePageState extends State<ExpensePage> {
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black12,
+                            color: Colors.grey.withOpacity(0.4),
                             spreadRadius: 5,
                             blurRadius: 6,
                             offset: Offset(0, 4),
@@ -298,8 +388,10 @@ class _ExpensePageState extends State<ExpensePage> {
                               LineChartBarData(
                                 spots: getPlotPointsExpense(snapshot.data!),
                                 isCurved: false,
-                                barWidth: 2.71,
-                                colors: [Colors.black],
+                                barWidth: 2.5,
+                                colors: [
+                                  primaryColor,
+                                ],
                               ),
                             ],
                           ),
@@ -309,8 +401,7 @@ class _ExpensePageState extends State<ExpensePage> {
                   SizedBox(
                     height: 20,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  Center(
                     child: Text(
                       "Transactions",
                       style: TextStyle(
@@ -333,7 +424,9 @@ class _ExpensePageState extends State<ExpensePage> {
                       } catch (e) {
                         return Container();
                       }
-                      if (dataAtIndex.type == "Expense") {
+
+                      if (dataAtIndex.type == "Expense" &&
+                          dataAtIndex.date.month == selectedDate.month) {
                         DateTime date = dataAtIndex.date;
                         String currentDate =
                             "${date.day} ,${months[date.month - 1]},${date.year}";

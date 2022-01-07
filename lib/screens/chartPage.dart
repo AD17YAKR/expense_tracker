@@ -2,9 +2,12 @@
 
 import 'package:expense_tracker/controllers/dbhelper.dart';
 import 'package:expense_tracker/models/transaction.dart';
+import 'package:expense_tracker/utils/gradientText.dart';
+import 'package:expense_tracker/utils/piechart.dart';
 import 'package:expense_tracker/utils/theme.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -143,6 +146,7 @@ class _ChartPageState extends State<ChartPage> {
     }
     return dataSetIncome;
   }
+
   //
   //
   //
@@ -171,6 +175,7 @@ class _ChartPageState extends State<ChartPage> {
     }
     return dataSetIncome;
   }
+
   //
   //
   //
@@ -233,17 +238,22 @@ class _ChartPageState extends State<ChartPage> {
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 3.0),
               child: ListView(
                 children: [
-                  Center(
-                    child: Text(
-                      "Welcome! Here Are Your Charts ",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  GradientText(
+                    " Welcome!\n Here Are Your Charts ",
+                    style: TextStyle(
+                      fontSize: 26,
+                      letterSpacing: 3,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    gradient: LinearGradient(
+                      colors: [Colors.redAccent, Colors.teal],
                     ),
                   ),
                   SizedBox(
                     height: 18,
+                  ),
+                  Divider(
+                    thickness: 1,
                   ),
                   Center(
                     child: Padding(
@@ -251,11 +261,11 @@ class _ChartPageState extends State<ChartPage> {
                       child: Text(
                         " Income Chart",
                         style: TextStyle(
-                            fontSize: 38, fontWeight: FontWeight.bold),
+                            fontSize: 28, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
-                  if (dataSetIncome.length < 2)
+                  if (dataSetIncome.length <= 2)
                     Card(
                       elevation: 5,
                       clipBehavior: Clip.hardEdge,
@@ -263,10 +273,11 @@ class _ChartPageState extends State<ChartPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       child: Container(
-                        height: 65,
+                        height: 100,
                         child: Center(
                           child: Text(
-                            " Insufficient data to render a chart",
+                            " Insufficient data to render a chart\nPlease Enter At least 3 Incomes to rended a chart",
+                            textAlign: TextAlign.center,
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w500,
                               letterSpacing: 1.1,
@@ -326,13 +337,16 @@ class _ChartPageState extends State<ChartPage> {
                         ),
                       ),
                     ),
+                  Divider(
+                    thickness: 1,
+                  ),
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 15, top: 9),
                       child: Text(
                         " Expense Chart",
                         style: TextStyle(
-                            fontSize: 38, fontWeight: FontWeight.bold),
+                            fontSize: 28, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -344,10 +358,11 @@ class _ChartPageState extends State<ChartPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       child: Container(
-                        height: 65,
+                        height: 100,
                         child: Center(
                           child: Text(
-                            " Insufficient data to render a chart",
+                            " Insufficient data to render a chart\nPlease Enter At least 3 Expenses to rended a chart",
+                            textAlign: TextAlign.center,
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w500,
                               letterSpacing: 1.1,
@@ -405,9 +420,12 @@ class _ChartPageState extends State<ChartPage> {
                         ),
                       ),
                     ),
+                  Divider(
+                    thickness: 1,
+                  ),
                   SizedBox(
                     height: 40,
-                  ),
+                  )
                 ],
               ),
             );

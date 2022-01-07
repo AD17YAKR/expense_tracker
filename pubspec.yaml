@@ -22,6 +22,8 @@ dependencies:
   fl_chart: ^0.40.6
   shared_preferences: ^2.0.11
   syncfusion_flutter_charts: ^19.4.41
+  adaptive_theme: ^2.3.0
+  month_picker_dialog: ^0.4.0
 
 dev_dependencies:
   flutter_test:
@@ -35,45 +37,3 @@ flutter:
   assets:
     - assets/
   uses-material-design: true
-  fonts:
-    - family: Authenia
-      fonts:
-        - asset: fonts/Authenia.ttf
-    - family: Brickson
-      fonts:
-        - asset: fonts/BricksonFree.ttf
-    - family: LemonMilk
-      fonts:
-        - asset: fonts/LemonMilkBold.ttf
-        - asset: fonts/LemonMilkLightItalic.ttf
-        - asset: fonts/LemonMilkMedium.ttf
-        - asset: fonts/LemonMilkMediumItalic.ttf
-        - asset: fonts/LemonMilkRegular.ttf
-        - asset: fonts/LemonMilkRegularItalic.ttf
-    - family: Library
-      fonts:
-        - asset: fonts/LibraryRecordsRegular.ttf
-    - family: MoongladeDemoBold
-      fonts:
-        - asset: fonts/MoongladeDemoBold.ttf
-    - family: PotteryWheelRegular
-      fonts:
-        - asset: fonts/PotteryWheelRegular.ttf
-    - family: StoryElementRegular
-      fonts:
-        - asset: fonts/StoryElementRegular.ttf
-    - family: Sundaycoffee
-      fonts:
-        - asset: fonts/Sundaycoffee.ttf
-    - family: Falco
-      fonts:
-        - asset: fonts/Falco_Black_Outline.ttf
-          weight: 200
-        - asset: fonts/FalcoBlack.ttf
-          weight: 800
-        - asset: fonts/Falco-Black-Inline-Negative.ttf
-          weight: 400
-    - family: Foundry
-      fonts:
-        - asset: fonts/Foundry-Font Pack.ttf
-      

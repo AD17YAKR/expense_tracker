@@ -17,7 +17,6 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   //
   DbHelper dbHelper = DbHelper();
-  String darktext = "Wanna Turn it Dark";
 
   //
   //
@@ -26,6 +25,10 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: primaryColor,
+        toolbarHeight: 0.0,
+      ),
       body: ListView(
         padding: const EdgeInsets.all(
           10.0,
@@ -173,39 +176,6 @@ class _SettingsState extends State<Settings> {
           ),
           //
           //
-          Card(
-            elevation: 6,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      "   " + darktext,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                  Switch(
-                      value: isDarkModeEnabled,
-                      onChanged: (bool state) {
-                        setState(() {
-                          isDarkModeEnabled = state;
-                        });
-                      })
-                ],
-              ),
-            ),
-          ),
         ],
       ),
     );

@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
 
 import 'package:expense_tracker/screens/add_transaction.dart';
-import 'package:expense_tracker/screens/chartPage.dart';
+import 'package:expense_tracker/screens/expensePage.dart';
 import 'package:expense_tracker/screens/homepage.dart';
+import 'package:expense_tracker/screens/incomePage.dart';
 import 'package:expense_tracker/screens/settings.dart';
 import 'package:expense_tracker/utils/customanimatedbottombar.dart';
 import 'package:expense_tracker/utils/theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -40,6 +42,15 @@ class _MyHomePageState extends State<MyHomePage> {
           textAlign: TextAlign.center,
         ),
         BottomNavyBarItem(
+          icon: Icon(CupertinoIcons.arrow_up_circle),
+          title: Text(
+            'Income',
+          ),
+          activeColor: Colors.blue,
+          inactiveColor: _inactiveColor,
+          textAlign: TextAlign.center,
+        ),
+        BottomNavyBarItem(
           icon: Icon(Icons.add),
           title: Text('Add'),
           activeColor: Colors.blue,
@@ -47,9 +58,9 @@ class _MyHomePageState extends State<MyHomePage> {
           textAlign: TextAlign.center,
         ),
         BottomNavyBarItem(
-          icon: Icon(Icons.bar_chart),
+          icon: Icon(CupertinoIcons.arrow_down_circle),
           title: Text(
-            'Charts ',
+            'Expense',
           ),
           activeColor: Colors.blue,
           inactiveColor: _inactiveColor,
@@ -69,8 +80,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget getBody() {
     List<Widget> pages = [
       HomePage(),
+      IncomePage(),
       AddTransaction(),
-      ChartPage(),
+      ExpensePage(),
       Settings()
     ];
     return IndexedStack(

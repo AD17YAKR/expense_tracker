@@ -52,7 +52,7 @@ class _AddNameScreenState extends State<AddNameScreen> {
             ),
           ),
           Text(
-            "What Your Name?",
+            " What's Your Name?",
             style: GoogleFonts.redHatDisplay(
               fontWeight: FontWeight.w400,
               fontSize: 20,
@@ -77,7 +77,8 @@ class _AddNameScreenState extends State<AddNameScreen> {
               child: TextField(
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: "  Your Name",
+                  hintText: "Your Name",
+                  prefixText: "   ",
                   hintStyle:
                       GoogleFonts.poppins(letterSpacing: 1.2, fontSize: 18),
                 ),

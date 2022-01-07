@@ -1,11 +1,7 @@
-// ignore_for_file: prefer_const_constructors, unused_local_variable
-
+// ignore_for_file: prefer_const_constructors, unused_local_variable, prefer_const_literals_to_create_immutables
 import 'package:expense_tracker/controllers/dbhelper.dart';
 import 'package:expense_tracker/models/transaction.dart';
-import 'package:expense_tracker/screens/add_transaction.dart';
-import 'package:expense_tracker/screens/expensePage.dart';
-import 'package:expense_tracker/screens/incomePage.dart';
-import 'package:expense_tracker/screens/settings.dart';
+import 'package:expense_tracker/utils/gradientText.dart';
 import 'package:expense_tracker/utils/theme.dart';
 import 'package:expense_tracker/utils/widgets.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -14,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class IncomePage extends StatefulWidget {
@@ -36,20 +33,23 @@ class _IncomePageState extends State<IncomePage> {
   DateTime today = DateTime.now();
   DateTime now = DateTime.now();
   int index = 1;
+  int selectedIndex = 0;
+  DateTime selectedDate = DateTime.now();
 
+  //
   List<String> months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
+    "January",
+    "February",
+    "March",
+    "April",
     "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
   ];
 
   //
@@ -81,6 +81,7 @@ class _IncomePageState extends State<IncomePage> {
   Future<List<TransactionModel>> fetch() async {
     if (box.values.isEmpty) {
       return Future.value([]);
+      return Future.value([]);
     } else {
       List<TransactionModel> items = [];
       box.toMap().values.forEach((element) {
@@ -108,7 +109,7 @@ class _IncomePageState extends State<IncomePage> {
     List tempdataSet = [];
 
     for (TransactionModel item in entireData) {
-      if (item.date.month == today.month && item.type == "Income") {
+      if (item.date.month == selectedDate.month && item.type == "Income") {
         tempdataSet.add(item);
       }
     }
@@ -138,7 +139,7 @@ class _IncomePageState extends State<IncomePage> {
     totalBalance = 0;
 
     for (TransactionModel data in entireData) {
-      if (data.date.month == today.month) {
+      if (data.date.month == selectedDate.month) {
         if (data.type == "Income") {
           totalBalance += data.amount;
           totalIncome += data.amount;
@@ -154,6 +155,21 @@ class _IncomePageState extends State<IncomePage> {
 //
 //
 //
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showMonthPicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101, 12));
+    if (picked != null && picked != selectedDate) {
+      setState(
+        () {
+          selectedDate = picked;
+        },
+      );
+    }
+  }
 
 //
 //
@@ -193,17 +209,110 @@ class _IncomePageState extends State<IncomePage> {
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 3.0),
               child: ListView(
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        onPressed: () => Get.back(),
+                        icon: Icon(Icons.arrow_back_ios),
+                      ),
+                      GradientText(
+                        "Income Data ",
+                        style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        gradient: LinearGradient(
+                          colors: [primaryColor, Colors.grey, Colors.green],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 1,
+                      ),
+                    ],
+                  ),
+                  Divider(
+                    thickness: 1.5,
+                    color: primaryColor,
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        height: 50.0,
+                        child: TextButton(
+                          onPressed: () {
+                            _selectDate(context);
+                            FocusScope.of(context).unfocus();
+                          },
+                          style: ButtonStyle(
+                            padding: MaterialStateProperty.all(
+                              EdgeInsets.zero,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.black54,
+                                  borderRadius: BorderRadius.circular(
+                                    16.0,
+                                  ),
+                                  gradient: LinearGradient(colors: [
+                                    Colors.black,
+                                    Colors.green.shade700,
+                                  ]),
+                                ),
+                                padding: EdgeInsets.all(
+                                  12.0,
+                                ),
+                                child: Icon(
+                                  Icons.date_range_outlined,
+                                  size: 24.0,
+                                  // color: Colors.grey[700],
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 12.0,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          "For " +
+                              months[selectedDate.month.toInt() - 1] +
+                              ", " +
+                              selectedDate.year.toString(),
+                          style: GoogleFonts.poppins(
+                              fontSize: 18, letterSpacing: 1.3),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Divider(
+                    thickness: 1,
+                  ),
                   Center(
-                    child: Text(
-                      "Income Data ",
-                      style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
+                    child: GradientText(
+                      " Total Income for " +
+                          months[selectedDate.month.toInt() - 1] +
+                          " is : " +
+                          totalIncome.toString(),
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      gradient: LinearGradient(
+                        colors: [
+                          primaryColor,
+                          Colors.greenAccent.shade700,
+                        ],
                       ),
                     ),
                   ),
                   Divider(
-                    thickness: 1.5,
+                    thickness: .3,
                     color: primaryColor,
                   ),
                   Center(
@@ -290,8 +399,7 @@ class _IncomePageState extends State<IncomePage> {
                   SizedBox(
                     height: 20,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  Center(
                     child: Text(
                       "Transactions",
                       style: TextStyle(
@@ -314,7 +422,9 @@ class _IncomePageState extends State<IncomePage> {
                       } catch (e) {
                         return Container();
                       }
-                      if (dataAtIndex.type == "Income") {
+
+                      if (dataAtIndex.type == "Income" &&
+                          dataAtIndex.date.month == selectedDate.month) {
                         DateTime date = dataAtIndex.date;
                         String currentDate =
                             "${date.day} ,${months[date.month - 1]},${date.year}";

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:expense_tracker/screens/incomePage.dart';
 import 'package:expense_tracker/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -35,7 +36,7 @@ Widget cardIncome(String income) {
         padding: const EdgeInsets.all(6.0),
         child: const Icon(
           Icons.arrow_upward,
-          color: Colors.greenAccent,
+          color: Colors.white,
         ),
       ),
       const SizedBox(
@@ -147,10 +148,10 @@ Widget IncomeTile(
                   size: 28.0,
                   color: Colors.green[700],
                 ),
-                const SizedBox(
+                SizedBox(
                   width: 4.0,
                 ),
-                const Text(
+                Text(
                   "Income",
                   style: TextStyle(
                     fontSize: 20.0,
@@ -175,7 +176,7 @@ Widget IncomeTile(
             children: [
               Text(
                 "+ $value",
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 2,
@@ -183,7 +184,7 @@ Widget IncomeTile(
               ),
               Text(
                 note,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12.0,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 2,
