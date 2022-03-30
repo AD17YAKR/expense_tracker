@@ -10,7 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'navbar.dart';
 
 class AddNameScreen extends StatefulWidget {
-  const AddNameScreen({Key? key}) : super(key: key);
+   AddNameScreen({Key? key}) : super(key: key);
 
   @override
   _AddNameScreenState createState() => _AddNameScreenState();
@@ -59,11 +59,11 @@ class _AddNameScreenState extends State<AddNameScreen> {
               letterSpacing: 2,
             ),
           ),
-          const SizedBox(
+           SizedBox(
             height: 12,
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding:  EdgeInsets.all(8.0),
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),

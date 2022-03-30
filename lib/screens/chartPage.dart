@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_local_variable, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer__ructors, unused_local_variable, prefer__literals_to_create_immutables
 
 import 'package:expense_tracker/controllers/dbhelper.dart';
 import 'package:expense_tracker/models/transaction.dart';
@@ -14,7 +14,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChartPage extends StatefulWidget {
-  const ChartPage({Key? key}) : super(key: key);
+   ChartPage({Key? key}) : super(key: key);
 
   @override
   _ChartPageState createState() => _ChartPageState();
@@ -257,7 +257,7 @@ class _ChartPageState extends State<ChartPage> {
                   ),
                   Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: 15, top: 6),
+                      padding:  EdgeInsets.only(bottom: 15, top: 6),
                       child: Text(
                         " Income Chart",
                         style: TextStyle(
@@ -312,7 +312,7 @@ class _ChartPageState extends State<ChartPage> {
                       ),
                       height: 500.0,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 3.0, right: 35),
+                        padding:  EdgeInsets.only(left: 3.0, right: 35),
                         child: LineChart(
                           LineChartData(
                             titlesData: FlTitlesData(
@@ -342,7 +342,7 @@ class _ChartPageState extends State<ChartPage> {
                   ),
                   Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: 15, top: 9),
+                      padding:  EdgeInsets.only(bottom: 15, top: 9),
                       child: Text(
                         " Expense Chart",
                         style: TextStyle(
@@ -397,7 +397,7 @@ class _ChartPageState extends State<ChartPage> {
                       ),
                       height: 500.0,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 3.0, right: 35),
+                        padding:  EdgeInsets.only(left: 3.0, right: 35),
                         child: LineChart(
                           LineChartData(
                             titlesData: FlTitlesData(

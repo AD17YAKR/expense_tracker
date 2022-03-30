@@ -1,6 +1,6 @@
 // not just splash , will ask use for their name here
 
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer__ructors
 
 import 'package:expense_tracker/controllers/dbhelper.dart';
 import 'package:expense_tracker/screens/addname.dart';
@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 import 'navbar.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+   SplashScreen({Key? key}) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -24,9 +24,9 @@ class _SplashScreenState extends State<SplashScreen> {
   Future getSettings() async {
     String? name = await dbHelper.getName();
     if (name != null) {
-      Get.to(MyHomePage());
+      Get.offAll(MyHomePage());
     } else {
-      Get.to(AddNameScreen());
+      Get.offAll(AddNameScreen());
     }
   }
 

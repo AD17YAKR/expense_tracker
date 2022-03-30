@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer__ructors
 
 import 'package:expense_tracker/controllers/dbhelper.dart';
 import 'package:expense_tracker/utils/theme.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Settings extends StatefulWidget {
-  const Settings({Key? key}) : super(key: key);
+   Settings({Key? key}) : super(key: key);
 
   @override
   _SettingsState createState() => _SettingsState();
@@ -30,11 +30,11 @@ class _SettingsState extends State<Settings> {
         toolbarHeight: 0.0,
       ),
       body: ListView(
-        padding: const EdgeInsets.all(
+        padding:  EdgeInsets.all(
           10.0,
         ),
         children: [
-          const SizedBox(
+           SizedBox(
             height: 15.0,
           ),
           Center(
@@ -44,7 +44,7 @@ class _SettingsState extends State<Settings> {
                   fontSize: 32, fontWeight: FontWeight.bold, letterSpacing: 2),
             ),
           ),
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           Card(
@@ -63,7 +63,7 @@ class _SettingsState extends State<Settings> {
                 }
               },
               tileColor: Colors.white,
-              contentPadding: const EdgeInsets.symmetric(
+              contentPadding:  EdgeInsets.symmetric(
                 vertical: 12.0,
                 horizontal: 20.0,
               ),
@@ -72,17 +72,17 @@ class _SettingsState extends State<Settings> {
                   8.0,
                 ),
               ),
-              title: const Text(
+              title:  Text(
                 "Clean Data",
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w800,
                 ),
               ),
-              subtitle: const Text(
+              subtitle:  Text(
                 "This is irreversible",
               ),
-              trailing: const Icon(
+              trailing:  Icon(
                 Icons.delete_forever,
                 size: 32.0,
                 color: Colors.black87,
@@ -113,16 +113,16 @@ class _SettingsState extends State<Settings> {
                           12.0,
                         ),
                       ),
-                      padding: const EdgeInsets.symmetric(
+                      padding:  EdgeInsets.symmetric(
                         vertical: 8.0,
                         horizontal: 16.0,
                       ),
                       child: TextFormField(
-                        decoration: const InputDecoration(
+                        decoration:  InputDecoration(
                           hintText: "Your Name",
                           border: InputBorder.none,
                         ),
-                        style: const TextStyle(
+                        style:  TextStyle(
                           fontSize: 20.0,
                         ),
                         maxLength: 12,
@@ -136,7 +136,7 @@ class _SettingsState extends State<Settings> {
                         onPressed: () {
                           Navigator.of(context).pop(nameEditing);
                         },
-                        child: const Text(
+                        child:  Text(
                           "OK",
                         ),
                         style: ElevatedButton.styleFrom(primary: primaryColor),
@@ -151,7 +151,7 @@ class _SettingsState extends State<Settings> {
                 }
               },
               tileColor: Colors.white,
-              contentPadding: const EdgeInsets.symmetric(
+              contentPadding:  EdgeInsets.symmetric(
                 vertical: 12.0,
                 horizontal: 20.0,
               ),
@@ -160,14 +160,14 @@ class _SettingsState extends State<Settings> {
                   8.0,
                 ),
               ),
-              title: const Text(
+              title:  Text(
                 "Change Name",
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w800,
                 ),
               ),
-              trailing: const Icon(
+              trailing:  Icon(
                 Icons.change_circle,
                 size: 32.0,
                 color: Colors.black87,

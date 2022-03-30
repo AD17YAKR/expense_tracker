@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer__ructors, prefer_const_constructors
 
 import 'package:expense_tracker/screens/incomePage.dart';
 import 'package:expense_tracker/utils/theme.dart';
@@ -33,18 +33,18 @@ Widget cardIncome(String income) {
           color: Colors.white70,
           borderRadius: BorderRadius.circular(18),
         ),
-        padding: const EdgeInsets.all(6.0),
-        child: const Icon(
+        padding: EdgeInsets.all(6.0),
+        child: Icon(
           Icons.arrow_upward,
-          color: Colors.white,
+          color: Colors.green.withOpacity(.7),
         ),
       ),
-      const SizedBox(
+      SizedBox(
         width: 8.5,
       ),
       Column(
         children: [
-          const Text(
+          Text(
             "Income",
             style: TextStyle(
                 color: Colors.white,
@@ -54,7 +54,7 @@ Widget cardIncome(String income) {
           ),
           Text(
             income,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
               fontSize: 19,
               fontWeight: FontWeight.w600,
@@ -77,18 +77,18 @@ Widget cardExpense(String expense) {
           color: Colors.white70,
           borderRadius: BorderRadius.circular(18),
         ),
-        padding: const EdgeInsets.all(6.0),
-        child: const Icon(
+        padding: EdgeInsets.all(6.0),
+        child: Icon(
           Icons.arrow_downward,
           color: Colors.redAccent,
         ),
       ),
-      const SizedBox(
+      SizedBox(
         width: 8.5,
       ),
       Column(
         children: [
-          const Text(
+          Text(
             "Expense",
             style: TextStyle(
               color: Colors.white,
@@ -99,7 +99,7 @@ Widget cardExpense(String expense) {
           ),
           Text(
             expense,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
               fontSize: 19,
               fontWeight: FontWeight.w600,
@@ -115,10 +115,10 @@ Widget IncomeTile(
     BuildContext context, int value, String note, String date, int index) {
   if (note == "Expense") note = "Income";
   return Container(
-    margin: const EdgeInsets.all(
+    margin: EdgeInsets.all(
       8.0,
     ),
-    padding: const EdgeInsets.all(
+    padding: EdgeInsets.all(
       18.0,
     ),
     decoration: BoxDecoration(
@@ -201,10 +201,10 @@ Widget IncomeTile(
 Widget ExpenseTile(
     BuildContext context, int value, String note, String date, int index) {
   return Container(
-    margin: const EdgeInsets.all(
+    margin: EdgeInsets.all(
       8.0,
     ),
-    padding: const EdgeInsets.all(
+    padding: EdgeInsets.all(
       18.0,
     ),
     decoration: BoxDecoration(
@@ -232,10 +232,10 @@ Widget ExpenseTile(
                   size: 28.0,
                   color: Colors.red[700],
                 ),
-                const SizedBox(
+                SizedBox(
                   width: 4.0,
                 ),
-                const Text(
+                Text(
                   "Expense",
                   style: TextStyle(
                     fontSize: 20.0,
@@ -260,7 +260,7 @@ Widget ExpenseTile(
             children: [
               Text(
                 "- $value",
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 2,
@@ -268,7 +268,7 @@ Widget ExpenseTile(
               ),
               Text(
                 note,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12.0,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 2,

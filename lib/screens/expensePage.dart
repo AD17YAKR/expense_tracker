@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_local_variable, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer__ructors, unused_local_variable, prefer__literals_to_create_immutables, prefer_const_constructors
 
 import 'package:expense_tracker/controllers/dbhelper.dart';
 import 'package:expense_tracker/models/transaction.dart';
@@ -15,7 +15,7 @@ import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ExpensePage extends StatefulWidget {
-  const ExpensePage({Key? key}) : super(key: key);
+  ExpensePage({Key? key}) : super(key: key);
 
   @override
   _ExpensePageState createState() => _ExpensePageState();
@@ -217,15 +217,15 @@ class _ExpensePageState extends State<ExpensePage> {
                         onPressed: () => Get.back(),
                         icon: Icon(Icons.arrow_back_ios),
                       ),
-                      GradientText(
+                      Text(
                         "Expense Data ",
                         style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        gradient: LinearGradient(
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red.withOpacity(.7)),
+                        /* gradient: LinearGradient(
                           colors: [primaryColor, Colors.grey, Colors.red],
-                        ),
+                        ), */
                       ),
                       SizedBox(
                         width: 1,
@@ -281,7 +281,7 @@ class _ExpensePageState extends State<ExpensePage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
+                        padding: EdgeInsets.only(left: 10.0),
                         child: Text(
                           "For " +
                               months[selectedDate.month.toInt() - 1] +
@@ -319,7 +319,7 @@ class _ExpensePageState extends State<ExpensePage> {
                   ),
                   Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: 15, top: 6),
+                      padding: EdgeInsets.only(bottom: 15, top: 6),
                       child: Text(
                         " Income Chart",
                         style: TextStyle(
@@ -373,7 +373,7 @@ class _ExpensePageState extends State<ExpensePage> {
                       ),
                       height: 500.0,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 3.0, right: 35),
+                        padding: EdgeInsets.only(left: 3.0, right: 35),
                         child: LineChart(
                           LineChartData(
                             titlesData: FlTitlesData(

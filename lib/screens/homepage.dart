@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_local_variable, prefer_final_fields, unused_field
+// ignore_for_file: prefer__ructors, unused_local_variable, prefer_final_fields, unused_field, prefer_const_constructors
 
 import 'package:expense_tracker/controllers/dbhelper.dart';
 import 'package:expense_tracker/models/transaction.dart';
@@ -16,7 +16,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+   HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -163,19 +163,19 @@ class _HomePageState extends State<HomePage> {
               child: ListView(
                 children: [
                   Center(
-                    child: GradientText(
+                    child: Text(
                       "Welcome ${preferences.getString("name")} ",
                       style: GoogleFonts.mate(
                         fontWeight: FontWeight.w500,
                         fontSize: 32,
                         letterSpacing: 2,
+                        color: Colors.indigoAccent,
                       ),
-                      gradient: LinearGradient(colors: [
+                      /*  gradient: LinearGradient(colors: [
                         primaryColor,
-                        Colors.indigoAccent,
                         Colors.greenAccent.shade700,
                         Colors.redAccent
-                      ]),
+                      ]), */
                     ),
                   ),
                   SizedBox(

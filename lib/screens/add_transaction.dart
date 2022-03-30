@@ -1,16 +1,15 @@
-// ignore_for_file: unused_import, unused_local_variable, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: unused_import, unused_local_variable, prefer__ructors, prefer__literals_to_create_immutables, prefer_const_constructors
 
 import 'package:expense_tracker/controllers/dbhelper.dart';
 import 'package:expense_tracker/utils/gradientText.dart';
 import 'package:expense_tracker/utils/theme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddTransaction extends StatefulWidget {
-  const AddTransaction({Key? key}) : super(key: key);
+  AddTransaction({Key? key}) : super(key: key);
 
   @override
   _AddTransaction createState() => _AddTransaction();
@@ -63,14 +62,15 @@ class _AddTransaction extends State<AddTransaction> {
         ),
         children: [
           Center(
-            child: GradientText(
+            child: Text(
               "Add Transaction",
               style: GoogleFonts.italiana(
                 fontSize: 32.0,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 3,
+                color: primaryColor,
               ),
-              gradient: textGrad2,
+              // gradient: textGrad2,
             ),
           ),
           //
@@ -81,22 +81,22 @@ class _AddTransaction extends State<AddTransaction> {
           Row(
             children: [
               Container(
-                decoration: BoxDecoration(
-                  color: primaryColor,
-                  borderRadius: BorderRadius.circular(
-                    16.0,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(
+                      16.0,
+                    ),
                   ),
-                ),
-                padding: EdgeInsets.all(
-                  12.0,
-                ),
-                child: Icon(
-                  Icons.attach_money,
-                  size: 24.0,
-                  // color: Colors.grey[700],
-                  color: Colors.white,
-                ),
-              ),
+                  padding: EdgeInsets.all(
+                    12.0,
+                  ),
+                  child: Center(
+                    child: Text(
+                      "₹",
+                      style: TextStyle(color: Colors.white, fontSize: 24.0),
+                    ),
+                  )),
               SizedBox(
                 width: 12.0,
               ),
@@ -135,8 +135,9 @@ class _AddTransaction extends State<AddTransaction> {
           Row(
             children: [
               Container(
+                width: 50,
                 decoration: BoxDecoration(
-                  color: primaryColor,
+                  color: Colors.grey,
                   borderRadius: BorderRadius.circular(
                     16.0,
                   ),
@@ -179,22 +180,22 @@ class _AddTransaction extends State<AddTransaction> {
           Row(
             children: [
               Container(
-                decoration: BoxDecoration(
-                  color: primaryColor,
-                  borderRadius: BorderRadius.circular(
-                    16.0,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(
+                      16.0,
+                    ),
                   ),
-                ),
-                padding: EdgeInsets.all(
-                  12.0,
-                ),
-                child: Icon(
-                  Icons.attach_money,
-                  size: 24.0,
-                  // color: Colors.grey[700],
-                  color: Colors.white,
-                ),
-              ),
+                  padding: EdgeInsets.all(
+                    12.0,
+                  ),
+                  child: Center(
+                    child: Text(
+                      "₹",
+                      style: TextStyle(color: Colors.white, fontSize: 24.0),
+                    ),
+                  )),
               SizedBox(
                 width: 12.0,
               ),
@@ -208,7 +209,7 @@ class _AddTransaction extends State<AddTransaction> {
                     color: type == "Income" ? Colors.white : Colors.black,
                   ),
                 ),
-                selectedColor: primaryColor,
+                selectedColor: Colors.green.withOpacity(.7),
                 onSelected: (val) {
                   if (val) {
                     setState(() {
@@ -234,7 +235,7 @@ class _AddTransaction extends State<AddTransaction> {
                     color: type == "Expense" ? Colors.white : Colors.black,
                   ),
                 ),
-                selectedColor: primaryColor,
+                selectedColor: Colors.red.withOpacity(.7),
                 onSelected: (val) {
                   if (val) {
                     setState(() {
@@ -273,7 +274,7 @@ class _AddTransaction extends State<AddTransaction> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: primaryColor,
+                      color: Colors.grey,
                       borderRadius: BorderRadius.circular(
                         16.0,
                       ),
@@ -343,8 +344,7 @@ class _AddTransaction extends State<AddTransaction> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                primary: primaryColor,
-              ),
+                  primary: primaryColor, shape: StadiumBorder()),
               child: Text(
                 "Add",
                 style: GoogleFonts.eagleLake(
